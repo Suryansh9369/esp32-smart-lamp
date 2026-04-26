@@ -54,12 +54,12 @@
 </div>
 
 <script>
-const ws = new WebSocket("ws://" + location.host);
+const ws = new WebSocket("wss://" + location.host);
 
 const slider = document.getElementById("slider");
 const status = document.getElementById("status");
 
-// 🔁 RECEIVE REAL-TIME UPDATE
+// receive updates
 ws.onmessage = (event) => {
   let val = parseInt(event.data);
 
@@ -67,12 +67,11 @@ ws.onmessage = (event) => {
   status.innerText = val + "%";
 };
 
-// 🔁 BUTTON → SERVER
+// send value
 function setValue(val) {
   ws.send(val.toString());
 }
 
-// 🔁 SLIDER → SERVER
 slider.oninput = () => {
   ws.send(slider.value);
 };

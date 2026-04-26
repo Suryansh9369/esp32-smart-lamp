@@ -8,8 +8,7 @@ const char* ssid = "Xiaomi 11i";
 const char* password = "12345679";
 
 // your laptop IP
-const char* host = "https://kismat-ki-batti.onrender.com";
-const int port = 3000;
+const char* host = "kismat-ki-batti.onrender.com";
 
 WebSocketsClient webSocket;
 
@@ -47,7 +46,6 @@ void webSocketEvent(WStype_t type, uint8_t * payload, size_t length) {
 void setup() {
   Serial.begin(115200);
 
-  // ✅ NEW PWM API (IMPORTANT)
   ledcAttach(LED_PIN, 5000, 8);
 
   WiFi.begin(ssid, password);
@@ -61,7 +59,8 @@ void setup() {
   Serial.println("\nConnected!");
   Serial.println(WiFi.localIP());
 
-  webSocket.begin(host, port, "/");
+  // ✅ FIXED
+  webSocket.beginSSL("kismat-ki-batti.onrender.com", 443, "/");
   webSocket.onEvent(webSocketEvent);
 }
 
