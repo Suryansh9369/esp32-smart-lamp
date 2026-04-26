@@ -12,14 +12,12 @@ let currentValue = "0";
 wss.on("connection", (ws) => {
   console.log("Client connected");
 
-  // send current state
   ws.send(currentValue);
 
   ws.on("message", (msg) => {
     currentValue = msg.toString();
     console.log("New Value:", currentValue);
 
-    // broadcast to all
     wss.clients.forEach(client => {
       if (client.readyState === WebSocket.OPEN) {
         client.send(currentValue);
@@ -31,6 +29,9 @@ wss.on("connection", (ws) => {
 // serve UI
 app.use(express.static(__dirname));
 
-server.listen(3000, () => {
-  console.log("Server running http://localhost:3000");
+// ✅ FIXED PORT
+const PORT = process.env.PORT || 3000;
+
+server.listen(PORT, () => {
+  console.log("Server running on port " + PORT);
 });
