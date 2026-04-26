@@ -8,7 +8,7 @@ const char* ssid = "Xiaomi 11i";
 const char* password = "12345679";
 
 // your laptop IP
-const char* host = "192.168.112.45";
+const char* host = "https://kismat-ki-batti.onrender.com";
 const int port = 3000;
 
 WebSocketsClient webSocket;
