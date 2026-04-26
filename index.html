@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta name="viewport" content="width=device-width">
+  <title>Smart Lamp</title>
+
+  <style>
+    body {
+      background: #0f172a;
+      color: white;
+      font-family: sans-serif;
+      text-align: center;
+    }
+
+    .card {
+      background: #1e293b;
+      padding: 20px;
+      margin: 40px auto;
+      width: 300px;
+      border-radius: 20px;
+    }
+
+    button {
+      width: 100%;
+      padding: 12px;
+      margin: 6px;
+      border-radius: 10px;
+      border: none;
+      background: #3b82f6;
+      color: white;
+    }
+
+    input[type=range] {
+      width: 100%;
+    }
+  </style>
+</head>
+
+<body>
+
+<h1>💡 Smart Lamp</h1>
+
+<div class="card">
+  <button onclick="setValue(0)">OFF</button>
+  <button onclick="setValue(25)">25%</button>
+  <button onclick="setValue(50)">50%</button>
+  <button onclick="setValue(75)">75%</button>
+  <button onclick="setValue(100)">100%</button>
+
+  <br><br>
+
+  <input type="range" id="slider" min="0" max="100" step="25">
+  <p id="status">0%</p>
+</div>
+
+<script>
+const ws = new WebSocket("ws://" + location.host);
+
+const slider = document.getElementById("slider");
+const status = document.getElementById("status");
+
+// 🔁 RECEIVE REAL-TIME UPDATE
+ws.onmessage = (event) => {
+  let val = parseInt(event.data);
+
+  slider.value = val;
+  status.innerText = val + "%";
+};
+
+// 🔁 BUTTON → SERVER
+function setValue(val) {
+  ws.send(val.toString());
+}
+
+// 🔁 SLIDER → SERVER
+slider.oninput = () => {
+  ws.send(slider.value);
+};
+</script>
+
+</body>
+</html>
